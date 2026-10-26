@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오늘의 운명, 피할 수 없습니다. | 정밀 캡슐 추첨 시스템</title>
+  <meta name="description" content="공정하고 세련된 미래 과학 연구소의 양자 캡슐 추첨 시스템. 오늘의 운명을 결정하는 단 한 명을 선발합니다.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Pretendard:wght@300;400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <!-- 연구실 배경 분위기 레이어 -->
+  <div class="lab-background" aria-hidden="true">
+    <div class="lab-grid-overlay"></div>
+    <div class="lab-ambient-glow glow-cyan"></div>
+    <div class="lab-ambient-glow glow-purple"></div>
+    <div class="lab-dust-particles"></div>
+  </div>
+
+  <!-- 메인 레이아웃 래퍼 -->
+  <div class="page-container">
+    
+    <!-- 관찰 연구원 패널 (데스크톱/태블릿 측면 배치, 메인 콘텐츠를 가리지 않음) -->
+    <aside class="researcher-station" aria-label="연구실 관찰 시스템">
+      <div class="researcher-glass-panel">
+        <div class="researcher-img-wrapper">
+          <img src="researcher.jpg" alt="연구실 수석 연구원 Dr. Thorne" class="researcher-img" id="researcherImg">
+          <div class="scanner-sweep"></div>
+          <div class="hud-corner hud-top-left"></div>
+          <div class="hud-corner hud-top-right"></div>
+          <div class="hud-corner hud-bottom-left"></div>
+          <div class="hud-corner hud-bottom-right"></div>
+        </div>
+        <div class="researcher-info">
+          <div class="researcher-status-badge">
+            <span class="status-indicator"></span>
+            <span class="status-text">MONITORING MATRIX</span>
+          </div>
+          <h2 class="researcher-name">Dr. A. Thorne</h2>
+          <p class="researcher-role">양자 확률 연구소 수석 연구원</p>
+          <div class="researcher-telemetry">
+            <div class="telemetry-row">
+              <span>CHAMBER TEMP</span>
+              <span class="telemetry-val">4.2 K</span>
+            </div>
+            <div class="telemetry-row">
+              <span>ENTROPY BIAS</span>
+              <span class="telemetry-val" id="telemetryEntropy">0.000% (STABLE)</span>
+            </div>
+            <div class="telemetry-row">
+              <span>CRYPTO SEED</span>
+              <span class="telemetry-val font-mono" id="telemetrySeed">CSP-RNG ACTIVE</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 중앙 핵심 콘텐츠 영역 -->
+    <main class="main-content">
+      
+      <!-- 상단 헤더 섹션 -->
+      <header class="system-header">
+        <div class="service-label-container">
+          <span class="system-chip">QUANTUM LAB SPECIMEN v2.4</span>
+          <span class="service-label" id="serviceLabel">CAPSULE PICK</span>
+          <button id="soundToggleBtn" class="sound-toggle-btn" type="button" aria-label="사운드 토글" title="연구소 음향 효과 켜기/끄기">
+            <svg class="sound-icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg>
+            <svg class="sound-icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <line x1="23" y1="9" x2="17" y2="15"></line>
+              <line x1="17" y1="9" x2="23" y2="15"></line>
+            </svg>
+            <span class="sound-label">AUDIO: ON</span>
+          </button>
+        </div>
+        <h1 class="main-title">오늘의 운명, 피할 수 없습니다.</h1>
+        <p class="sub-title">오늘의 주인공은 과연 누구?</p>
+      </header>
+
+      <!-- 4. 메인 캡슐 추첨 기계 -->
+      <section class="capsule-machine-section" aria-label="캡슐 추첨 기계">
+        <div class="capsule-machine-unit" id="capsuleMachine">
+          
+          <!-- 기계 상단 림 및 에어 밸브 -->
+          <div class="machine-cap">
+            <div class="machine-cap-ring"></div>
+            <div class="chamber-pressure-gauge">
+              <span class="gauge-label">P-CHAMBER</span>
+              <span class="gauge-val" id="gaugePressure">101.3 kPa</span>
+            </div>
+            <div class="machine-top-indicator">
+              <span class="pulse-dot"></span>
+              <span>READY</span>
+            </div>
+          </div>
+
+          <!-- 투명 아크릴 원통 챔버 -->
+          <div class="glass-cylinder-wrapper" id="glassCylinder">
+            <!-- 유리 반사광 및 음영 레이어 -->
+            <div class="cylinder-reflection left-reflection"></div>
+            <div class="cylinder-reflection right-reflection"></div>
+            <div class="cylinder-specular"></div>
+            <div class="cylinder-measurement-marks">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+
+            <!-- 스캔 레이저 빔 -->
+            <div class="scan-laser" id="scanLaser">
+              <div class="laser-beam"></div>
+              <div class="laser-flare-left"></div>
+              <div class="laser-flare-right"></div>
+            </div>
+
+            <!-- 캡슐들이 배치되는 내부 컨테이너 -->
+            <div class="capsules-chamber" id="capsulesChamber">
+              <!-- JS에서 참가자 수에 맞춰 1:1로 캡슐 렌더링 -->
+            </div>
+
+            <!-- 추출 포트 하이라이트 (캡슐 추출 시 집중되는 전면 영역) -->
+            <div class="extraction-portal" id="extractionPortal">
+              <div class="portal-ring"></div>
+              <div class="portal-glow"></div>
+            </div>
+          </div>
+
+          <!-- 기계 하단 금속 베이스 및 발광 코어 -->
+          <div class="machine-base">
+            <div class="base-flange"></div>
+            
+            <div class="quantum-core-housing">
+              <div class="core-circuit-lines"></div>
+              <!-- 시안 블루 & 퍼플 발광 코어 -->
+              <div class="quantum-core" id="quantumCore">
+                <div class="core-sphere"></div>
+                <div class="core-orbit ring-1"></div>
+                <div class="core-orbit ring-2"></div>
+                <div class="core-energy-glow"></div>
+              </div>
+              <div class="core-status-label font-mono">QUANTUM CORE DRIVE</div>
+            </div>
+
+            <div class="machine-pedestal">
+              <div class="vent-slits">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <div class="extraction-chute" id="extractionChute">
+                <span class="chute-text">EXTRACTION TERMINAL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. 추첨 상태 문구 및 최종 결과 공개 영역 -->
+        <div class="status-and-result-zone" id="statusResultZone" aria-live="polite">
+          <div class="status-banner" id="statusBanner">
+            <span class="status-icon" id="statusIcon">◈</span>
+            <span class="status-message" id="statusMessage">추첨 준비 완료: 참가자를 확인하고 버튼을 누르세요.</span>
+          </div>
+
+          <!-- 결과 발표 오버레이 카드 -->
+          <div class="fate-result-card" id="fateResultCard" style="display: none;">
+            <div class="result-backdrop-glow"></div>
+            <div class="result-badge-tag">TARGET LOCKED</div>
+            <h2 class="result-announcement">운명 추출 완료!</h2>
+            <div class="winner-reveal-wrap">
+              <div class="winner-frame">
+                <span class="winner-prefix">오늘의 운명 당첨자</span>
+                <div class="winner-name" id="winnerName">홍길동</div>
+                <span class="winner-capsule-tag" id="winnerCapsuleTag">SPECIMEN #01</span>
+              </div>
+            </div>
+            <p class="result-sub-hint">공정한 양자 난수(CSP-RNG)에 의해 최종 선택되었습니다.</p>
+          </div>
+        </div>
+
+        <!-- 6. 추첨 버튼 (캡슐 뽑기 / 다시 추첨하기) -->
+        <div class="action-btn-container">
+          <button type="button" class="draw-trigger-btn" id="drawBtn" disabled>
+            <span class="btn-glow-layer"></span>
+            <span class="btn-border-accent"></span>
+            <span class="btn-content">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"></path>
+              </svg>
+              <span class="btn-text" id="drawBtnText">캡슐 뽑기</span>
+            </span>
+          </button>
+          <div class="draw-condition-hint" id="drawConditionHint">
+            최소 2명 이상의 참가자를 등록해야 캡슐을 뽑을 수 있습니다.
+          </div>
+        </div>
+
+      </section>
+
+      <!-- 7. 참가자 관리 섹션 -->
+      <section class="participant-manager-section" aria-label="참가자 관리">
+        <div class="section-glass-card">
+          <div class="card-header">
+            <div class="title-with-badge">
+              <h2 class="section-heading">참가자 명단 구성</h2>
+              <span class="participant-count-badge" id="participantCountBadge">0 / 12명</span>
+            </div>
+            <span class="quota-info">공정한 1:1 캡슐 매칭 (최대 12명)</span>
+          </div>
+
+          <!-- 이름 입력 폼 -->
+          <form class="participant-input-form" id="participantForm" onsubmit="return false;">
+            <div class="input-wrapper">
+              <label for="participantInput" class="visually-hidden">참가자 이름</label>
+              <input 
+                type="text" 
+                id="participantInput" 
+                class="participant-text-input" 
+                placeholder="이름을 입력하세요 (예: 김철수, Sarah)" 
+                maxlength="16" 
+                autocomplete="off"
+                spellcheck="false"
+              >
+              <button type="submit" id="addParticipantBtn" class="add-participant-btn">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>참가자 추가</span>
+              </button>
+            </div>
+            <div class="input-feedback-msg" id="inputFeedback" role="alert"></div>
+          </form>
+
+          <!-- 등록된 참가자 목록 -->
+          <div class="participants-container">
+            <div class="participants-list" id="participantsList" role="list">
+              <!-- JS에서 참가자 태그 렌더링 -->
+            </div>
+            <div class="empty-list-placeholder" id="emptyPlaceholder">
+              <span class="placeholder-icon">⌬</span>
+              <p>아직 등록된 참가자가 없습니다. 이름을 입력하여 캡슐을 장전하세요.</p>
+            </div>
+          </div>
+
+          <!-- 빠른 세팅 예시 도우미 (식사비, 설거지, 청소, 발표자) -->
+          <div class="quick-preset-bar">
+            <span class="preset-label">빠른 테스트 세트:</span>
+            <button type="button" class="preset-btn" id="presetLunchBtn">점심 내기 4인</button>
+            <button type="button" class="preset-btn" id="presetDutyBtn">청소 당번 6인</button>
+            <button type="button" class="preset-btn" id="presetResetBtn">전체 비우기</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- 파티클 효과 캔버스 (결과 시 은은한 스파크 연출 후 자동 정리) -->
+  <canvas id="particleCanvas" class="particle-canvas" aria-hidden="true"></canvas>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1585 @@
+/* ==========================================================================
+   오늘의 운명, 피할 수 없습니다. - 미래 과학 연구소 캡슐 추첨 시스템 스타일시트
+   ========================================================================== */
+
+:root {
+  /* 색상 팔레트: 현실적인 다크 사이언스 랩 */
+  --bg-darkest: #07090e;
+  --bg-deep-navy: #0b111c;
+  --bg-lab-surface: #101826;
+  --bg-lab-card: rgba(16, 24, 38, 0.75);
+  --bg-glass-translucent: rgba(22, 33, 52, 0.45);
+
+  /* 미래 연구실 포인트 컬러 */
+  --accent-cyan: #00e5ff;
+  --accent-cyan-glow: rgba(0, 229, 255, 0.4);
+  --accent-cyan-dim: rgba(0, 229, 255, 0.12);
+  --accent-purple: #9d4edd;
+  --accent-purple-glow: rgba(157, 78, 221, 0.4);
+  --accent-pink: #ff5d8f;
+  --accent-pink-dim: rgba(255, 93, 143, 0.15);
+
+  /* 금속 및 유리 재질 */
+  --metal-highlight: #4a5d78;
+  --metal-base: #222d3d;
+  --metal-dark: #141c28;
+  --glass-border: rgba(140, 185, 230, 0.18);
+  --glass-specular: rgba(255, 255, 255, 0.35);
+
+  /* 텍스트 컬러 */
+  --text-primary: #f0f4fc;
+  --text-secondary: #9cb1cb;
+  --text-muted: #627791;
+  --text-accent: #00e5ff;
+
+  /* 글꼴 */
+  --font-main: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  --font-sci: 'Orbitron', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+
+  /* 전환 및 섀도우 */
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-subtle: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  --shadow-glow-cyan: 0 0 25px rgba(0, 229, 255, 0.25);
+  --shadow-glow-purple: 0 0 25px rgba(157, 78, 221, 0.25);
+}
+
+/* 글로벌 리셋 */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-darkest);
+  color: var(--text-primary);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   연구실 배경 환경 (짙은 네이비, 격자 오버레이, 은은한 반사광)
+   ========================================================================== */
+.lab-background {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.lab-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(circle at 50% 40%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at 50% 40%, black 30%, transparent 80%);
+}
+
+.lab-ambient-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.22;
+}
+
+.glow-cyan {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-cyan) 0%, transparent 70%);
+  top: -150px;
+  left: 15%;
+}
+
+.glow-purple {
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, var(--accent-purple) 0%, transparent 70%);
+  bottom: -200px;
+  right: 10%;
+}
+
+/* ==========================================================================
+   메인 레이아웃 구성
+   ========================================================================== */
+.page-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 36px;
+  align-items: start;
+}
+
+/* ==========================================================================
+   연구원 관찰 스테이션 (실사 성인 연구원 디스플레이 패널)
+   ========================================================================== */
+.researcher-station {
+  position: sticky;
+  top: 32px;
+}
+
+.researcher-glass-panel {
+  background: var(--bg-lab-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow-subtle), 0 0 15px rgba(0, 229, 255, 0.05);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.researcher-glass-panel:hover {
+  border-color: rgba(0, 229, 255, 0.35);
+  box-shadow: var(--shadow-subtle), 0 0 25px rgba(0, 229, 255, 0.12);
+}
+
+.researcher-img-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 3.8;
+  overflow: hidden;
+  background-color: var(--bg-deep-navy);
+}
+
+.researcher-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: contrast(1.05) brightness(0.96);
+}
+
+/* HUD 코너 브래킷 */
+.hud-corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--accent-cyan);
+  pointer-events: none;
+}
+.hud-top-left { top: 10px; left: 10px; border-top: 2px solid; border-left: 2px solid; }
+.hud-top-right { top: 10px; right: 10px; border-top: 2px solid; border-right: 2px solid; }
+.hud-bottom-left { bottom: 10px; left: 10px; border-bottom: 2px solid; border-left: 2px solid; }
+.hud-bottom-right { bottom: 10px; right: 10px; border-bottom: 2px solid; border-right: 2px solid; }
+
+.scanner-sweep {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 35%;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 229, 255, 0.15) 85%, var(--accent-cyan) 100%);
+  animation: hudScanner 7s ease-in-out infinite;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+@keyframes hudScanner {
+  0% { top: -40%; }
+  45%, 55% { top: 110%; }
+  100% { top: -40%; }
+}
+
+.researcher-info {
+  padding: 18px 18px 20px;
+  background: linear-gradient(180deg, rgba(16, 24, 38, 0.9) 0%, rgba(11, 17, 28, 0.95) 100%);
+}
+
+.researcher-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 10px;
+  background: var(--accent-cyan-dim);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.status-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+  animation: pulseLight 2s infinite ease-in-out;
+}
+
+.status-text {
+  font-family: var(--font-sci);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--accent-cyan);
+  font-weight: 700;
+}
+
+.researcher-name {
+  font-family: var(--font-sci);
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+  margin-bottom: 3px;
+}
+
+.researcher-role {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.researcher-telemetry {
+  background: rgba(7, 9, 14, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.telemetry-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.73rem;
+  color: var(--text-muted);
+}
+
+.telemetry-val {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   중앙 콘텐츠 및 헤더 영역
+   ========================================================================== */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.system-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.service-label-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.system-chip {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  letter-spacing: 0.05em;
+}
+
+.service-label {
+  font-family: var(--font-sci);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent-cyan);
+  padding: 4px 12px;
+  background: linear-gradient(90deg, rgba(0, 229, 255, 0.12), rgba(157, 78, 221, 0.12));
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  border-radius: 30px;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.15);
+}
+
+.sound-toggle-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.72rem;
+  font-family: var(--font-sci);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sound-toggle-btn:hover {
+  background: rgba(0, 229, 255, 0.1);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.sound-toggle-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.main-title {
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ffffff 30%, #d4e3ff 70%, #9cb8ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 25px rgba(0, 229, 255, 0.2);
+  margin-bottom: 8px;
+  word-break: keep-all;
+}
+
+.sub-title {
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  color: var(--text-secondary);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* ==========================================================================
+   대형 메인 캡슐 추첨 기계 섹션
+   ========================================================================== */
+.capsule-machine-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.capsule-machine-unit {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.7));
+  transform-origin: center bottom;
+  will-change: transform;
+}
+
+/* [추첨 긴장감 1단계] 고속 모터/와류 가동 미세 진동 (Rumble) */
+.capsule-machine-unit.is-rumbling {
+  animation: machineRumble 0.08s infinite alternate ease-in-out;
+}
+
+@keyframes machineRumble {
+  0% { transform: translate(-1.2px, 0.8px) rotate(-0.2deg); }
+  25% { transform: translate(1px, -0.9px) rotate(0.18deg); }
+  50% { transform: translate(-0.8px, -1.2px) rotate(-0.15deg); }
+  75% { transform: translate(1.3px, 0.7px) rotate(0.2deg); }
+  100% { transform: translate(0.4px, -0.6px) rotate(-0.1deg); }
+}
+
+/* [추첨 긴장감 2단계: 최고조] 캡슐 록온 및 추출 시 덜컹거리는 강력한 서스펜스 흔들림 (Heavy Shake) */
+.capsule-machine-unit.is-heavy-shake {
+  animation: machineHeavySuspenseShake 0.12s infinite alternate cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes machineHeavySuspenseShake {
+  0% { transform: translate(-3px, 2px) rotate(-0.6deg); }
+  20% { transform: translate(3.2px, -2px) rotate(0.55deg); }
+  40% { transform: translate(-2.4px, -1.8px) rotate(-0.45deg); }
+  60% { transform: translate(3px, 2.2px) rotate(0.7deg); }
+  80% { transform: translate(-1.6px, 1.2px) rotate(-0.35deg); }
+  100% { transform: translate(2.2px, -1.5px) rotate(0.4deg); }
+}
+
+/* 기계 상단 메탈 캡 */
+.machine-cap {
+  width: 78%;
+  height: 48px;
+  background: linear-gradient(180deg, #3d4f66 0%, #1f2a3a 70%, #17212f 100%);
+  border: 1px solid #5a7291;
+  border-bottom: none;
+  border-radius: 20px 20px 0 0;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.25), 0 -4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 5;
+}
+
+.machine-cap-ring {
+  position: absolute;
+  bottom: -4px;
+  left: -2%;
+  width: 104%;
+  height: 8px;
+  background: linear-gradient(90deg, #1f2a3a 0%, #4a5e78 50%, #1f2a3a 100%);
+  border: 1px solid #5d7596;
+  border-radius: 4px;
+}
+
+.chamber-pressure-gauge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.gauge-val {
+  color: var(--accent-cyan);
+  font-weight: 700;
+}
+
+.machine-top-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-sci);
+  font-size: 0.7rem;
+  color: #55f3a0;
+  letter-spacing: 0.05em;
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #55f3a0;
+  box-shadow: 0 0 6px #55f3a0;
+  animation: pulseLight 1.5s infinite;
+}
+
+/* ==========================================================================
+   투명 유리/아크릴 원통 챔버
+   ========================================================================== */
+.glass-cylinder-wrapper {
+  position: relative;
+  width: 74%;
+  height: 380px;
+  background: linear-gradient(90deg, 
+    rgba(14, 25, 42, 0.85) 0%, 
+    rgba(10, 20, 35, 0.45) 15%, 
+    rgba(7, 15, 28, 0.3) 50%, 
+    rgba(10, 20, 35, 0.45) 85%, 
+    rgba(14, 25, 42, 0.85) 100%
+  );
+  border-left: 2px solid rgba(135, 206, 250, 0.35);
+  border-right: 2px solid rgba(135, 206, 250, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 
+    inset 15px 0 25px -10px rgba(0, 229, 255, 0.15),
+    inset -15px 0 25px -10px rgba(157, 78, 221, 0.15),
+    inset 0 0 40px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  z-index: 4;
+}
+
+/* 유리 반사광 세로 하이라이트 */
+.cylinder-reflection {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 14px;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.left-reflection {
+  left: 6%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.03));
+  filter: blur(1px);
+}
+
+.right-reflection {
+  right: 6%;
+  background: linear-gradient(-90deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.02));
+  filter: blur(1px);
+}
+
+.cylinder-specular {
+  position: absolute;
+  top: 15px;
+  left: 12%;
+  width: 25%;
+  height: 60px;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.2) 0%, transparent 75%);
+  pointer-events: none;
+  transform: rotate(-12deg);
+  z-index: 6;
+}
+
+.cylinder-measurement-marks {
+  position: absolute;
+  left: 10px;
+  top: 30px;
+  bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+  opacity: 0.35;
+  z-index: 6;
+}
+
+.cylinder-measurement-marks span {
+  width: 12px;
+  height: 1px;
+  background-color: var(--accent-cyan);
+}
+
+/* ==========================================================================
+   스캔 레이저 빔 (2단계 스캔 애니메이션)
+   ========================================================================== */
+.scan-laser {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  top: -10px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 8;
+}
+
+.laser-beam {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(0, 229, 255, 0.4) 10%, 
+    #ffffff 50%, 
+    rgba(0, 229, 255, 0.4) 90%, 
+    transparent 100%
+  );
+  box-shadow: 
+    0 0 12px #00e5ff, 
+    0 0 24px rgba(0, 229, 255, 0.8),
+    0 0 40px rgba(0, 229, 255, 0.4);
+}
+
+.laser-flare-left, .laser-flare-right {
+  position: absolute;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px var(--accent-cyan);
+}
+.laser-flare-left { left: 4px; }
+.laser-flare-right { right: 4px; }
+
+/* ==========================================================================
+   내부 캡슐 컨테이너 및 캡슐 렌더링
+   ========================================================================== */
+.capsules-chamber {
+  position: absolute;
+  inset: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 14px;
+  perspective: 600px;
+  transform-style: preserve-3d;
+  z-index: 5;
+}
+
+/* 개별 캡슐 스타일 */
+.quantum-capsule {
+  position: relative;
+  width: 90px;
+  height: 44px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, 
+    var(--capsule-tint-start, rgba(0, 229, 255, 0.25)) 0%, 
+    var(--capsule-tint-mid, rgba(20, 35, 55, 0.8)) 50%, 
+    var(--capsule-tint-end, rgba(157, 78, 221, 0.35)) 100%
+  );
+  border: 1px solid var(--capsule-border, rgba(180, 220, 255, 0.35));
+  box-shadow: 
+    0 6px 14px rgba(0, 0, 0, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.5),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.4),
+    0 0 10px var(--capsule-glow, rgba(0, 229, 255, 0.2));
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  cursor: default;
+  user-select: none;
+  transition: transform 0.4s var(--ease-smooth), opacity 0.4s ease, filter 0.4s ease, box-shadow 0.4s ease;
+  will-change: transform, opacity;
+  animation: capsuleFloat 3.8s ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}
+
+/* 캡슐 중앙 크롬 링 분할 밴드 */
+.quantum-capsule::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 5px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #dce7f5 0%, #687e9c 60%, #3a4b60 100%);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+  z-index: 2;
+  border-radius: 1px;
+}
+
+/* 캡슐 상단 유리 하이라이트 */
+.quantum-capsule::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 10px;
+  right: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.02) 100%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.capsule-label {
+  position: relative;
+  z-index: 4;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 6px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-align: center;
+}
+
+/* 부유 애니메이션 (아이들 상태) */
+@keyframes capsuleFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(var(--idle-rot, 0deg));
+  }
+  50% {
+    transform: translateY(var(--float-y, -6px)) rotate(calc(var(--idle-rot, 0deg) + 3deg));
+  }
+}
+
+/* ==========================================================================
+   애니메이션 상태별 캡슐 스타일링
+   ========================================================================== */
+
+/* 1단계 & 2단계: 소용돌이/믹싱 상태 */
+.capsules-chamber.is-mixing .quantum-capsule {
+  animation: capsuleMixing 0.75s ease-in-out infinite alternate !important;
+}
+
+@keyframes capsuleMixing {
+  0% {
+    transform: translate(calc(var(--mix-x, 15px) * -1), calc(var(--mix-y, 10px) * -1)) rotate(calc(var(--idle-rot, 0deg) - 15deg)) scale(0.96);
+  }
+  100% {
+    transform: translate(var(--mix-x, 15px), var(--mix-y, 10px)) rotate(calc(var(--idle-rot, 0deg) + 20deg)) scale(1.04);
+  }
+}
+
+/* 2단계 레이저 감속 상태 */
+.capsules-chamber.is-scanning .quantum-capsule {
+  transition: transform 1.2s ease-out, filter 0.4s ease;
+  animation-duration: 2.2s !important;
+}
+
+/* 레이저 닿을 때 캡슐 반사광 효과 */
+.quantum-capsule.laser-hit {
+  filter: brightness(1.7) drop-shadow(0 0 12px var(--accent-cyan));
+}
+
+/* 3단계 & 4단계: 비당첨 캡슐 흐림 처리 */
+.capsules-chamber.has-selection .quantum-capsule:not(.is-winner) {
+  opacity: 0.22;
+  filter: grayscale(0.7) blur(1.5px);
+  transform: scale(0.85);
+  transition: all 0.8s var(--ease-smooth);
+}
+
+/* 당첨 캡슐 타겟 록온 및 추출 */
+.quantum-capsule.is-winner {
+  z-index: 20 !important;
+  opacity: 1 !important;
+  filter: none !important;
+  border-color: #ffffff !important;
+  box-shadow: 
+    0 0 25px var(--accent-cyan),
+    0 0 50px var(--accent-purple),
+    inset 0 0 15px rgba(255, 255, 255, 0.8) !important;
+  animation: winnerLockPulse 1s infinite alternate ease-in-out !important;
+}
+
+@keyframes winnerLockPulse {
+  0% {
+    box-shadow: 0 0 20px var(--accent-cyan), 0 0 35px var(--accent-purple);
+  }
+  100% {
+    box-shadow: 0 0 35px var(--accent-cyan), 0 0 60px var(--accent-purple), inset 0 0 10px #ffffff;
+  }
+}
+
+/* 4단계: 중앙 전면으로 당첨 캡슐 추출 */
+.quantum-capsule.is-extracted {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) scale(1.45) translateZ(40px) !important;
+  animation: winnerFloatExtracted 2.5s infinite ease-in-out !important;
+}
+
+@keyframes winnerFloatExtracted {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1.45) translateY(0px);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.48) translateY(-6px);
+  }
+}
+
+/* ==========================================================================
+   기계 하단 금속 베이스 및 양자 코어
+   ========================================================================== */
+.machine-base {
+  width: 86%;
+  background: linear-gradient(180deg, #1b2636 0%, #101824 50%, #0a1019 100%);
+  border: 1px solid #3d4f66;
+  border-top: none;
+  border-radius: 0 0 24px 24px;
+  padding: 16px 20px 22px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 
+    0 25px 35px rgba(0, 0, 0, 0.7),
+    inset 0 1px 3px rgba(255, 255, 255, 0.15);
+  z-index: 5;
+}
+
+.base-flange {
+  position: absolute;
+  top: -4px;
+  left: -2%;
+  width: 104%;
+  height: 8px;
+  background: linear-gradient(90deg, #1a2433 0%, #465a73 50%, #1a2433 100%);
+  border: 1px solid #576d8a;
+  border-radius: 4px;
+}
+
+.quantum-core-housing {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 6px 0 14px;
+}
+
+/* 시안 & 퍼플 발광 코어 */
+.quantum-core {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.25) 0%, rgba(157, 78, 221, 0.2) 60%, transparent 80%);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+  transition: all 0.4s ease;
+}
+
+.core-sphere {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 10%, var(--accent-cyan) 60%, var(--accent-purple) 100%);
+  box-shadow: 0 0 16px var(--accent-cyan), 0 0 30px var(--accent-purple);
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.core-orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px dashed rgba(0, 229, 255, 0.6);
+  pointer-events: none;
+}
+
+.ring-1 {
+  width: 50px;
+  height: 50px;
+  border-color: rgba(0, 229, 255, 0.65);
+  animation: orbitSpin 6s linear infinite;
+}
+
+.ring-2 {
+  width: 66px;
+  height: 66px;
+  border-color: rgba(157, 78, 221, 0.5);
+  border-style: dotted;
+  animation: orbitSpinRev 9s linear infinite;
+}
+
+@keyframes orbitSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes orbitSpinRev {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* 추첨 활성화 시 코어 고속 가동 */
+.quantum-core.is-active {
+  box-shadow: 0 0 35px var(--accent-cyan), 0 0 60px var(--accent-purple);
+}
+
+.quantum-core.is-active .core-sphere {
+  filter: brightness(1.4);
+  transform: scale(1.2);
+}
+
+.quantum-core.is-active .ring-1 {
+  animation-duration: 0.8s;
+  border-color: #ffffff;
+}
+
+.quantum-core.is-active .ring-2 {
+  animation-duration: 1.2s;
+  border-color: var(--accent-cyan);
+}
+
+.core-status-label {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+  letter-spacing: 0.08em;
+}
+
+.machine-pedestal {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.vent-slits {
+  display: flex;
+  gap: 6px;
+}
+
+.vent-slits span {
+  width: 32px;
+  height: 3px;
+  background-color: #0b111a;
+  border-radius: 2px;
+  border: 1px solid #233145;
+}
+
+.extraction-chute {
+  width: 65%;
+  height: 28px;
+  background: #080d15;
+  border: 1px solid #28374c;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9);
+}
+
+.chute-text {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   상태 메시지 및 결과 영역
+   ========================================================================== */
+.status-and-result-zone {
+  width: 100%;
+  max-width: 580px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 52px;
+}
+
+.status-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 22px;
+  background: var(--bg-lab-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 30px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-subtle);
+  text-align: center;
+}
+
+.status-banner.is-analyzing {
+  border-color: var(--accent-cyan);
+  color: var(--text-primary);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+}
+
+.status-icon {
+  color: var(--accent-cyan);
+  font-size: 1.1rem;
+}
+
+/* 당첨 결과 카드 오버레이 */
+.fate-result-card {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(135deg, rgba(16, 26, 44, 0.92) 0%, rgba(11, 17, 28, 0.96) 100%);
+  border: 1.5px solid rgba(0, 229, 255, 0.45);
+  border-radius: 18px;
+  padding: 24px 20px 20px;
+  text-align: center;
+  box-shadow: 
+    0 15px 40px rgba(0, 0, 0, 0.6),
+    0 0 35px rgba(0, 229, 255, 0.18),
+    0 0 60px rgba(157, 78, 221, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  animation: resultCardPop 0.5s var(--ease-smooth);
+}
+
+@keyframes resultCardPop {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.result-badge-tag {
+  display: inline-block;
+  font-family: var(--font-sci);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: var(--accent-cyan);
+  background: rgba(0, 229, 255, 0.12);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  padding: 3px 12px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.result-announcement {
+  font-family: var(--font-sci);
+  font-size: 1.35rem;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  text-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+  margin-bottom: 16px;
+}
+
+.winner-reveal-wrap {
+  margin: 8px 0 16px;
+}
+
+.winner-frame {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 36px;
+  background: radial-gradient(circle at center, rgba(0, 229, 255, 0.08) 0%, transparent 80%), rgba(7, 12, 20, 0.7);
+  border: 1px solid rgba(157, 78, 221, 0.35);
+  border-radius: 14px;
+  box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.1);
+  max-width: 90%;
+}
+
+.winner-prefix {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.winner-name {
+  font-size: clamp(2rem, 5vw, 2.9rem);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  background: linear-gradient(135deg, #ffffff 20%, #7bf0ff 60%, #e0aaff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(0, 229, 255, 0.6);
+  word-break: break-all;
+  line-height: 1.2;
+}
+
+.winner-capsule-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent-purple);
+  margin-top: 6px;
+  letter-spacing: 0.1em;
+}
+
+.result-sub-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   추첨 버튼
+   ========================================================================== */
+.action-btn-container {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.draw-trigger-btn {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  height: 60px;
+  background: linear-gradient(135deg, #13243a 0%, #0d1726 100%);
+  border: none;
+  border-radius: 30px;
+  color: #ffffff;
+  font-family: var(--font-sci);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(0, 229, 255, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  transition: all 0.3s var(--ease-smooth);
+}
+
+.draw-trigger-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 14px 30px rgba(0, 0, 0, 0.6),
+    0 0 35px rgba(0, 229, 255, 0.5),
+    0 0 45px rgba(157, 78, 221, 0.3);
+}
+
+.draw-trigger-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.draw-trigger-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  filter: grayscale(0.5);
+}
+
+.btn-glow-layer {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.35) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.btn-border-accent {
+  position: absolute;
+  inset: 0;
+  border-radius: 30px;
+  border: 1.5px solid rgba(0, 229, 255, 0.55);
+  pointer-events: none;
+}
+
+.btn-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn-icon {
+  width: 20px;
+  height: 20px;
+  stroke: var(--accent-cyan);
+}
+
+.draw-condition-hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ==========================================================================
+   참가자 관리 영역
+   ========================================================================== */
+.participant-manager-section {
+  width: 100%;
+}
+
+.section-glass-card {
+  background: var(--bg-lab-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--shadow-subtle);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.title-with-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-heading {
+  font-family: var(--font-main);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.participant-count-badge {
+  font-family: var(--font-sci);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  background: var(--accent-cyan-dim);
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.participant-count-badge.is-full {
+  color: var(--accent-pink);
+  background: var(--accent-pink-dim);
+  border-color: var(--accent-pink);
+}
+
+.quota-info {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* 입력 폼 */
+.participant-input-form {
+  margin-bottom: 20px;
+}
+
+.input-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.participant-text-input {
+  flex: 1;
+  height: 48px;
+  background: rgba(8, 13, 22, 0.75);
+  border: 1px solid rgba(135, 175, 220, 0.25);
+  border-radius: 12px;
+  padding: 0 16px;
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  color: #ffffff;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.participant-text-input:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);
+  background: rgba(12, 18, 30, 0.9);
+}
+
+.participant-text-input::placeholder {
+  color: var(--text-muted);
+}
+
+.participant-text-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.add-participant-btn {
+  height: 48px;
+  padding: 0 20px;
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.18) 0%, rgba(157, 78, 221, 0.18) 100%);
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  border-radius: 12px;
+  color: #ffffff;
+  font-family: var(--font-main);
+  font-size: 0.92rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.add-participant-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.3) 0%, rgba(157, 78, 221, 0.3) 100%);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);
+}
+
+.add-participant-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.input-feedback-msg {
+  min-height: 22px;
+  font-size: 0.82rem;
+  margin-top: 6px;
+  color: var(--accent-pink);
+  transition: opacity 0.2s ease;
+}
+
+/* 참가자 목록 영역 */
+.participants-container {
+  min-height: 110px;
+  background: rgba(7, 11, 18, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 16px;
+  position: relative;
+}
+
+.participants-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* 참가자 개별 칩 */
+.participant-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: rgba(18, 27, 43, 0.85);
+  border: 1px solid var(--chip-border, rgba(140, 180, 230, 0.2));
+  border-radius: 20px;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+  animation: chipAppear 0.25s var(--ease-smooth);
+}
+
+@keyframes chipAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.participant-chip:hover {
+  border-color: var(--accent-cyan);
+  background: rgba(22, 34, 54, 0.95);
+}
+
+.chip-color-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: var(--chip-color, var(--accent-cyan));
+  box-shadow: 0 0 6px var(--chip-color, var(--accent-cyan));
+  flex-shrink: 0;
+}
+
+.chip-name {
+  font-weight: 500;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chip-remove-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.chip-remove-btn:hover:not(:disabled) {
+  color: var(--accent-pink);
+  transform: scale(1.15);
+}
+
+.chip-remove-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.empty-list-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 10px;
+  color: var(--text-muted);
+  text-align: center;
+  gap: 8px;
+}
+
+.placeholder-icon {
+  font-size: 2rem;
+  color: rgba(0, 229, 255, 0.3);
+}
+
+.empty-list-placeholder p {
+  font-size: 0.88rem;
+}
+
+/* 빠른 테스트 프리셋 바 */
+.quick-preset-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  flex-wrap: wrap;
+}
+
+.preset-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.preset-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.preset-btn:hover:not(:disabled) {
+  background: rgba(0, 229, 255, 0.1);
+  border-color: rgba(0, 229, 255, 0.3);
+  color: var(--accent-cyan);
+}
+
+.preset-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   파티클 캔버스
+   ========================================================================== */
+.particle-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* ==========================================================================
+   미디어 쿼리: 반응형 최적화
+   ========================================================================== */
+@media (max-width: 1080px) {
+  .page-container {
+    grid-template-columns: 260px 1fr;
+    gap: 24px;
+    padding: 20px 16px 48px;
+  }
+  .researcher-img-wrapper {
+    aspect-ratio: 3 / 3.4;
+  }
+}
+
+@media (max-width: 860px) {
+  .page-container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .researcher-station {
+    position: static;
+    max-width: 580px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .researcher-glass-panel {
+    display: flex;
+    align-items: center;
+  }
+
+  .researcher-img-wrapper {
+    width: 120px;
+    height: 120px;
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+  }
+
+  .researcher-info {
+    padding: 14px 16px;
+    flex: 1;
+  }
+
+  .researcher-telemetry {
+    display: none; /* 모바일/태블릿에서 공간 절약 */
+  }
+}
+
+@media (max-width: 560px) {
+  .page-container {
+    padding: 16px 12px 36px;
+  }
+
+  .glass-cylinder-wrapper {
+    width: 90%;
+    height: 320px;
+  }
+
+  .machine-cap {
+    width: 94%;
+    padding: 0 14px;
+  }
+
+  .machine-base {
+    width: 98%;
+  }
+
+  .researcher-station {
+    display: none; /* 작은 모바일 화면에서는 연구실 배경 장식 요소를 줄여 핵심 콘텐츠 우선 확보 */
+  }
+
+  .quantum-capsule {
+    width: 78px;
+    height: 38px;
+    font-size: 0.72rem;
+  }
+
+  .input-wrapper {
+    flex-direction: column;
+  }
+
+  .add-participant-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .action-btn-container {
+    width: 90%;
+  }
+
+  .draw-trigger-btn {
+    max-width: 100%;
+  }
+}
+
+/* 접근성: prefers-reduced-motion 설정 지원 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .scanner-sweep, .laser-beam {
+    display: none !important;
+  }
+}
